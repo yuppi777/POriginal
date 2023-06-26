@@ -48,7 +48,7 @@ public class Lottery : MonoBehaviour
                 int reachP = Random.Range(1, 100);
                 if (reachP < 10)
                 {
-                    Debug.Log("‚¿‚å‚¢ˆ³");
+                    Debug.Log("D‹@");
                 }
                 else if(reachP < 100)
                 {
