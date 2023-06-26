@@ -1,34 +1,33 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Lottery : MonoBehaviour
 {
-    private bool firsthit = false; //‰“–‚½‚è
-    private bool reach = false;  //ƒŠ[ƒ`‚©”Û‚©
+    private bool firsthit = false; //åˆå½“ãŸã‚Š
+    private bool reach = false;  //ãƒªãƒ¼ãƒã‹å¦ã‹
 
     [SerializeField]
-    private int randomMaxP;@//‰“–‚½‚èŠm—¦
+    private int randomMaxP;
     
-    private int lostMax = 100; //‚Í‚¸‚ê‚ÌU‚è•ª‚¯
+    private int lostMax = 100; //ã¯ãšã‚Œæ™‚ã®æŒ¯ã‚Šåˆ†ã‘
 
     private int reachNumber = 0;
 
 
     public void LooLetStart()
     {
-       @int randomP = Random.Range(1, randomMaxP);
+       int randomP = Random.Range(1, randomMaxP);
 
 
-
-        //Debug.Log("ƒXƒ^[ƒg");
+        //Debug.Log(A);
         if (randomP == 1)
         {
             firsthit = true;
-            Debug.Log("‚ ‚½‚è");
+            Debug.Log("ã‚ãŸã‚Š");
 
             int reachCount = Random.Range(1, 7);
-            reachNumber = reachCount;//ƒŠ[ƒ`ƒeƒ“ƒpƒC‚Ì”‚ğ•Û‘¶
+            reachNumber = reachCount;//ãƒªãƒ¼ãƒãƒ†ãƒ³ãƒ‘ã‚¤ã®æ•°ã‚’ä¿å­˜
             Debug.Log(reachCount);
 
         }
@@ -38,28 +37,28 @@ public class Lottery : MonoBehaviour
 
             if (lost < 10 )
             {
-                reach = true; //ƒŠ[ƒ`
-                Debug.Log("ƒŠ[ƒ`");
+                reach = true; //ãƒªãƒ¼ãƒ
+                Debug.Log("ãƒªãƒ¼ãƒ");
 
                 int reachCount = Random.Range(1, 6);
-                reachNumber = reachCount;//ƒŠ[ƒ`ƒeƒ“ƒpƒC‚Ì”‚ğ•Û‘¶
+                reachNumber = reachCount;//ãƒªãƒ¼ãƒãƒ†ãƒ³ãƒ‘ã‚¤ã®æ•°ã‚’ä¿å­˜
                 Debug.Log(reachCount);
 
                 int reachP = Random.Range(1, 100);
                 if (reachP < 10)
                 {
-                    Debug.Log("D‹@");
+                    Debug.Log("ã¡ã‚‡ã„åœ§");
                 }
                 else if(reachP < 100)
                 {
-                    Debug.Log("ƒtƒŠ[ƒY");
+                    Debug.Log("ãƒ•ãƒªãƒ¼ã‚º");
                 }
 
             }
 
 
 
-            Debug.Log("‚Í‚¸‚ê");
+            Debug.Log("ã¯ãšã‚Œ");
         }
 
     }
