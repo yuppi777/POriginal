@@ -26,7 +26,7 @@ public class MainLogic
     /// <summary>
     /// 外れ演出
     /// </summary>
-    public int Performance(bool value)
+    public int Performance(int value)
     {
         return 1;
     }
