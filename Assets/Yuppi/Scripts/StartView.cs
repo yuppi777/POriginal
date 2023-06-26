@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +16,7 @@ public class StartView : MonoBehaviour
 
         if (collision.gameObject.tag == "Ball")
         {
-            Debug.Log("íäëIäJén");
+            Debug.Log("ÊäΩÈÅ∏ÈñãÂßã");
             lottery.LooLetStart();
             Destroy(collision.gameObject);
         }
