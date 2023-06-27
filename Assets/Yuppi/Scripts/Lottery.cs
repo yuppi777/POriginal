@@ -14,6 +14,9 @@ public class Lottery : MonoBehaviour
 
     private int reachNumber = 0;
 
+    private int[] rushNumbers = new int[] { 1, 3, 5, 7 };
+    private int[] normalNumbers = new int[] { 2, 4, 6};
+
 
     public void LooLetStart()
     {
@@ -26,9 +29,27 @@ public class Lottery : MonoBehaviour
             firsthit = true;
             Debug.Log("あたり");
 
-            int reachCount = Random.Range(1, 7);
-            reachNumber = reachCount;//リーチテンパイの数を保存
-            Debug.Log(reachCount);
+            
+
+            int rushjudge = Random.Range(1, 100);
+            if (rushjudge< 50)
+            {
+                int rushReachCount = Random.Range(0, rushNumbers.Length);
+                reachNumber = rushNumbers[rushReachCount];//リーチテンパイの数を保存
+                Debug.Log(rushNumbers[rushReachCount]);
+
+                Debug.Log("確変");
+            }
+            else if(rushjudge < 100)
+            {
+                int normalReachCount = Random.Range(0, normalNumbers.Length);
+                reachNumber = normalNumbers[normalReachCount];//リーチテンパイの数を保存
+                Debug.Log(normalNumbers[normalReachCount]);
+                Debug.Log("通常");
+            }
+
+
+
 
         }
         else
@@ -47,9 +68,9 @@ public class Lottery : MonoBehaviour
                 int reachP = Random.Range(1, 100);
                 if (reachP < 10)
                 {
-                    Debug.Log("ちょい圧");
+                    Debug.Log("好機");
                 }
-                else if(reachP < 100)
+                else if(reachP < 20)
                 {
                     Debug.Log("フリーズ");
                 }
