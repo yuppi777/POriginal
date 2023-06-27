@@ -12,6 +12,8 @@ public class Lottery : MonoBehaviour
     private int randomMaxP;
     [SerializeField]
     private ReelMove Move;
+    [SerializeField]
+    private OnHold onHold;
     
     private int lostMax = 100; //はずれ時の振り分け
 
@@ -23,36 +25,59 @@ public class Lottery : MonoBehaviour
 
     public void LooLetStart()
     {
-        Move.ReelAction();
-       int randomP = Random.Range(1, randomMaxP);
+        int randomP = Random.Range(1, randomMaxP);
+
+
+        if (onHold.onHoldCount.Count < onHold.maxHold)
+        {
+            Move.ReelAction();
+
+            if (randomP ==1)
+            {
+                onHold.onHoldCount.Add(true);
+            }
+            else
+            {
+                onHold.onHoldCount.Add(false);
+            }
+
+        }
+      
 
 
         //Debug.Log(A);
         if (randomP == 1)
         {
             firsthit = true;
-            Debug.Log("あたり");
-            DOTween.Sequence()
-                       .AppendInterval(3)
-                       .OnComplete(() => Move.ReachAction(reachNumber));
-
-
-            int rushjudge = Random.Range(1, 100);
-            if (rushjudge< 50)
+           
+            if (onHold.onHoldCount.Count < onHold.maxHold) //保留がマックスになったら
             {
-                int rushReachCount = Random.Range(0, rushNumbers.Length);
-                reachNumber = rushNumbers[rushReachCount];//リーチテンパイの数を保存
-                Debug.Log(rushNumbers[rushReachCount]);
+                Debug.Log("あたり");
+                //onHold.onHoldCount.Add(true);
+                DOTween.Sequence()
+                    .AppendInterval(3)
+                    .OnComplete(() => Move.ReachAction(reachNumber));
 
-                Debug.Log("確変");
+
+                int rushjudge = Random.Range(1, 100);
+                if (rushjudge < 50)
+                {
+                    int rushReachCount = Random.Range(0, rushNumbers.Length);
+                    reachNumber = rushNumbers[rushReachCount];//リーチテンパイの数を保存
+                    Debug.Log(rushNumbers[rushReachCount]);
+
+                    Debug.Log("確変");
+                }
+                else if (rushjudge < 100)
+                {
+                    int normalReachCount = Random.Range(0, normalNumbers.Length);
+                    reachNumber = normalNumbers[normalReachCount];//リーチテンパイの数を保存
+                    Debug.Log(normalNumbers[normalReachCount]);
+                    Debug.Log("通常");
+                }
+
             }
-            else if(rushjudge < 100)
-            {
-                int normalReachCount = Random.Range(0, normalNumbers.Length);
-                reachNumber = normalNumbers[normalReachCount];//リーチテンパイの数を保存
-                Debug.Log(normalNumbers[normalReachCount]);
-                Debug.Log("通常");
-            }
+
 
 
 
@@ -60,40 +85,48 @@ public class Lottery : MonoBehaviour
         }
         else
         {
-            int lost = Random.Range(0, lostMax);
-
-            if (lost < 10 )
+            if (onHold.onHoldCount.Count < onHold.maxHold)//保留がマックスになったら
             {
-                reach = true; //リーチ
-                Debug.Log("リーチ");
 
-                int reachCount = Random.Range(1, 6);
-                reachNumber = reachCount;//リーチテンパイの数を保存
-                Debug.Log(reachCount);
+                //onHold.onHoldCount.Add(false);
+
+                int lost = Random.Range(0, lostMax);
+
+                if (lost < 10)
+                {
+                    reach = true; //リーチ
+                    Debug.Log("リーチ");
+
+                    int reachCount = Random.Range(1, 6);
+                    reachNumber = reachCount;//リーチテンパイの数を保存
+                    Debug.Log(reachCount);
+
+                    DOTween.Sequence()
+                           .AppendInterval(3)
+                           .OnComplete(() => Move.ReachAction(reachNumber));
+
+                    int reachP = Random.Range(1, 100);
+                    if (reachP < 10)
+                    {
+                        Debug.Log("好機");
+                    }
+                    else if (reachP < 20)
+                    {
+                        Debug.Log("フリーズ");
+                    }
+
+                }
+
+
+
+                Debug.Log("はずれ");
 
                 DOTween.Sequence()
                        .AppendInterval(3)
-                       .OnComplete(() => Move.ReachAction(reachNumber));
-
-                int reachP = Random.Range(1, 100);
-                if (reachP < 10)
-                {
-                    Debug.Log("好機");
-                }
-                else if(reachP < 20)
-                {
-                    Debug.Log("フリーズ");
-                }
-
+                       .OnComplete(() => Move.Hazure());
             }
+           
 
-
-
-            Debug.Log("はずれ");
-
-            DOTween.Sequence()
-                   .AppendInterval(3)
-                   .OnComplete(() => Move.Hazure());
 
         }
 
