@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class Lottery : MonoBehaviour
 
     [SerializeField]
     private int randomMaxP;
+    [SerializeField]
+    private ReelMove Move;
     
     private int lostMax = 100; //はずれ時の振り分け
 
@@ -20,6 +23,7 @@ public class Lottery : MonoBehaviour
 
     public void LooLetStart()
     {
+        Move.ReelAction();
        int randomP = Random.Range(1, randomMaxP);
 
 
@@ -28,8 +32,10 @@ public class Lottery : MonoBehaviour
         {
             firsthit = true;
             Debug.Log("あたり");
+            DOTween.Sequence()
+                       .AppendInterval(3)
+                       .OnComplete(() => Move.ReachAction(reachNumber));
 
-            
 
             int rushjudge = Random.Range(1, 100);
             if (rushjudge< 50)
@@ -65,6 +71,10 @@ public class Lottery : MonoBehaviour
                 reachNumber = reachCount;//リーチテンパイの数を保存
                 Debug.Log(reachCount);
 
+                DOTween.Sequence()
+                       .AppendInterval(3)
+                       .OnComplete(() => Move.ReachAction(reachNumber));
+
                 int reachP = Random.Range(1, 100);
                 if (reachP < 10)
                 {
@@ -80,6 +90,11 @@ public class Lottery : MonoBehaviour
 
 
             Debug.Log("はずれ");
+
+            DOTween.Sequence()
+                   .AppendInterval(3)
+                   .OnComplete(() => Move.Hazure());
+
         }
 
     }

@@ -17,39 +17,49 @@ public class ReelMove : MonoBehaviour
     float pos;
     int i;
 
+    bool IsReel = false;
+    bool IsAction = false;
+
     private void Start()
     {
         pos = transform.localPosition.x;
         SetUp();
-        Observable.EveryUpdate().Where(i => Input.GetKeyDown(KeyCode.W))
-            .Subscribe(l => 
-            { 
-                ReelActionCenter.Pause(); 
-                ReelActionDown.Pause(); 
-                ReelActionUp.Pause(); 
-
-                OnMove(Up,0); 
-                OnMove(Under,0.5f); 
-                OnMove(Center,0.8f); 
-            });
         
-        Observable.EveryUpdate().Where(i => Input.GetKeyDown(KeyCode.Q))
-            .Subscribe(l => 
-            {
-                ReelActionCenter.Play();
-                ReelActionDown.Play();
-                ReelActionUp.Play();
-            }); 
-        
-        Observable.EveryUpdate().Where(i => Input.anyKeyDown)
-            .Where(x => int.TryParse(Input.inputString,out i))
-            .Subscribe(l => 
-            {
-                ReelActionUp.Pause();
-                ReelActionDown.Pause();
+    }
 
-                Reach(i);
-            }); 
+    public void ReachAction(int index)
+    {
+        if (IsAction) { return; }
+
+        IsAction = true;
+        ReelActionUp.Pause();
+        ReelActionDown.Pause();
+
+        Reach(index);
+    }
+
+    public void ReelAction()
+    {
+        if (IsReel) { return; }
+
+        IsReel = true;
+        ReelActionCenter.Play();
+        ReelActionDown.Play();
+        ReelActionUp.Play();
+    }
+
+    public void Hazure()
+    {
+        if (IsAction) { return; }
+
+        IsAction = true;
+        ReelActionCenter.Pause();
+        ReelActionDown.Pause();
+        ReelActionUp.Pause();
+
+        OnMove(Up, 0);
+        OnMove(Under, 0.5f);
+        OnMove(Center, 0.8f);
     }
 
     public void SetUp()
@@ -66,8 +76,10 @@ public class ReelMove : MonoBehaviour
         ReelActionDown = DOTween.Sequence()
                .Append(Under.DOLocalMoveX(pos - 14, Speed+0.04f).SetEase(Ease.Linear))
                .OnComplete(() => ReelActionDown.Restart());
-               
 
+        ReelActionUp.Pause();
+        ReelActionDown.Pause();
+        ReelActionCenter.Pause();
     }
 
     public void Reach(int index)
@@ -108,14 +120,15 @@ public class ReelMove : MonoBehaviour
         }
 
         DOTween.Sequence()
-               .Append(Up.DOLocalMoveX(-20,0))
+               .Append(Up.DOLocalMoveX(-20, 0))
                .Append(Up.DOLocalMoveX(upindex + 3, Speed + 0.25f).SetEase(Ease.Linear))
                .Append(Up.DOLocalMoveX(upindex, 1).SetEase(Ease.Linear));
 
         DOTween.Sequence()
                .Append(Under.DOLocalMoveX(-20, 0))
                .Append(Under.DOLocalMoveX(downindex + 3, Speed + 0.35f).SetEase(Ease.Linear))
-               .Append(Under.DOLocalMoveX(downindex, 1.3f).SetEase(Ease.Linear));
+               .Append(Under.DOLocalMoveX(downindex, 1.3f).SetEase(Ease.Linear))
+               .OnComplete(() => {IsAction = false; IsReel = false; });
 
     }
 
@@ -123,7 +136,10 @@ public class ReelMove : MonoBehaviour
     {
         var a = reel.localPosition.x - 3;
         DOTween.Sequence()
-               .Append(reel.DOLocalMoveX((int)a, 1 + duration).SetEase(Ease.Linear));
+               .Append(reel.DOLocalMoveX((int)a, 1 + duration).SetEase(Ease.Linear))
+               .OnComplete(() => { IsAction = false; IsReel = false; });
+
+
     }
 
 
