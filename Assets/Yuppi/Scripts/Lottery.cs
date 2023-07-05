@@ -46,7 +46,7 @@ public class Lottery : MonoBehaviour
 
 
         //Debug.Log(A);
-        if (randomP == 1)
+        if (randomP == 1)　//あたり
         {
             firsthit = true;
            
@@ -56,7 +56,12 @@ public class Lottery : MonoBehaviour
                 //onHold.onHoldCount.Add(true);
                 DOTween.Sequence()
                     .AppendInterval(3)
-                    .OnComplete(() => Move.ReachAction(reachNumber));
+                    .OnComplete(() => 
+                    {
+                        Move.ReachAction(reachNumber);
+                        onHold.RemoveOnHold();
+                    });
+                    //.OnComplete(() => onHold.RemoveOnHold()); ;
 
 
                 int rushjudge = Random.Range(1, 100);
@@ -83,7 +88,7 @@ public class Lottery : MonoBehaviour
 
 
         }
-        else
+        else  //はずれ
         {
             if (onHold.onHoldCount.Count < onHold.maxHold)//保留がマックスになったら
             {
@@ -104,6 +109,7 @@ public class Lottery : MonoBehaviour
                     DOTween.Sequence()
                            .AppendInterval(3)
                            .OnComplete(() => Move.ReachAction(reachNumber));
+                          
 
                     int reachP = Random.Range(1, 100);
                     if (reachP < 10)
@@ -123,7 +129,15 @@ public class Lottery : MonoBehaviour
 
                 DOTween.Sequence()
                        .AppendInterval(3)
-                       .OnComplete(() => Move.Hazure());
+                       .OnComplete(() =>
+                       {
+                           Move.Hazure();
+                           onHold.RemoveOnHold();
+                       });
+                       //.OnComplete(() =>
+                       //{
+                       //    onHold.RemoveOnHold();
+                       //});
             }
            
 
