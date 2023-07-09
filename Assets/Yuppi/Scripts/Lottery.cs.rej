@@ -1,0 +1,10 @@
+diff a/Assets/Yuppi/Scripts/Lottery.cs b/Assets/Yuppi/Scripts/Lottery.cs	(rejected hunks)
+@@ -24,7 +24,7 @@
+     public void LooLetStart()
+     {
+         Move.ReelAction();
+-       int randomP = Random.Range(1, randomMaxP);
++        int randomP = Random.Range(1, randomMaxP);
+ 
+ 
+         //Debug.Log(A);
