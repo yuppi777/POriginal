@@ -24,7 +24,7 @@ public class Lottery : MonoBehaviour
     public void LooLetStart()
     {
         Move.ReelAction();
-       int randomP = Random.Range(1, randomMaxP);
+        int randomP = Random.Range(1, randomMaxP);
 
 
         //Debug.Log(A);
